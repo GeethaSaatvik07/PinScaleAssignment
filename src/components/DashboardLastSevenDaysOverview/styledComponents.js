@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-export const LastTransactionContainer = styled.div`
+export const OverviewHeadingAndContainer = styled.div`
   display: flex;
   flex-direction: column;
   background: #f5f7fa;
   margin-right: 25px;
 `;
 
-export const LastTransactionHeading = styled.p`
+export const OverviewHeading = styled.p`
   color: #333b69;
   font-family: Inter;
   font-size: 22px;
@@ -17,7 +17,7 @@ export const LastTransactionHeading = styled.p`
   margin-bottom: 16px;
 `;
 
-export const RecentTransactionsContainer = styled.div`
+export const OverviewContainer = styled.div`
   display: flex;
   //   width: 1110px;
   //   height: 210px;
@@ -32,5 +32,4 @@ export const RecentTransactionsContainer = styled.div`
   flex-shrink: 0;
   border-radius: 25px;
   background: #fff;
-  margin-bottom: 24px;
 `;

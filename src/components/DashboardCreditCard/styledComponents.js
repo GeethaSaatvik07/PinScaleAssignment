@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 export const CreditTile = styled.div`
   display: flex;
-  width: 43.2%;
+  width: 49%;
   //   height: 168px;
-  height: 19vh;
+  height: 25vh;
   padding: 25px 36px;
   flex-direction: row;
   justify-content: space-between;
@@ -13,7 +13,7 @@ export const CreditTile = styled.div`
   flex-shrink: 0;
   border-radius: 25px;
   background: #fff;
-  margin-right: 12px;
+  margin-right: 24px;
   margin-bottom: 20px;
 `;
 

@@ -1,3 +1,6 @@
+import Cookies from "js-cookie";
+import { Redirect } from "react-router-dom";
+
 import {
   DashboardPage,
   DashboardWithHeader,
@@ -10,21 +13,30 @@ import DashboardCreditCard from "../DashboardCreditCard";
 import Header from "../Header";
 import SideNavbar from "../SideNavbar";
 import DashboardLastTransactions from "../DashboardLastTransactions";
+import DashboardLastSevenDaysOverview from "../DashboardLastSevenDaysOverview";
 
-const Dashboard = () => (
-  <DashboardPage>
-    <SideNavbar />
-    <DashboardWithHeader>
-      <Header heading={"Accounts"} />
-      <DashboardContainer>
-        <CreditAndDebitContainer>
-          <DashboardCreditCard />
-          <DashboardDebitCard />
-        </CreditAndDebitContainer>
-        <DashboardLastTransactions />
-      </DashboardContainer>
-    </DashboardWithHeader>
-  </DashboardPage>
-);
+const Dashboard = () => {
+  const jwtToken = Cookies.get("user_id");
+  console.log(jwtToken);
+  if (jwtToken === undefined) {
+    return <Redirect to="/login" />;
+  }
+  return (
+    <DashboardPage>
+      <SideNavbar active={"Dashboard"} />
+      <DashboardWithHeader>
+        <Header heading={"Accounts"} />
+        <DashboardContainer>
+          <CreditAndDebitContainer>
+            <DashboardCreditCard />
+            <DashboardDebitCard />
+          </CreditAndDebitContainer>
+          <DashboardLastTransactions />
+          <DashboardLastSevenDaysOverview />
+        </DashboardContainer>
+      </DashboardWithHeader>
+    </DashboardPage>
+  );
+};
 
 export default Dashboard;

@@ -5,7 +5,7 @@ import {
   ProfileWithHeader,
   ProfileContainer,
   ProfileCard,
-  //   ProfileImage,
+  ProfileImage,
 } from "./styledComponents";
 
 import Header from "../Header";
@@ -16,15 +16,15 @@ class Profile extends Component {
   render() {
     return (
       <ProfilePage>
-        <SideNavbar />
+        <SideNavbar active={"Profile"} />
         <ProfileWithHeader>
           <Header heading={"Profile"} />
           <ProfileContainer>
             <ProfileCard>
-              {/* <ProfileImage
+              <ProfileImage
                 src="https://www.figma.com/file/U75zTaCvoQJUPT9FOaA3Dj/image/57d3d250790e98129931897251abd3915a931233"
                 alt="profile photo"
-              /> */}
+              />
               <ProfileInfo />
             </ProfileCard>
           </ProfileContainer>

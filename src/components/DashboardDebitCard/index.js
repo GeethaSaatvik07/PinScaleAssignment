@@ -1,4 +1,5 @@
 import { Component } from "react";
+import Cookies from "js-cookie";
 
 import {
   CreditAndDebitTileMoneyAndName,
@@ -8,33 +9,55 @@ import {
 } from "./styledComponents";
 
 class DashboardDebitCard extends Component {
-  state = { debit: 0 };
+  state = { debit: "" };
 
   componentDidMount() {
     this.getDebitAmounts();
   }
 
   getDebitAmounts = async () => {
-    const apiUrl =
-      "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
-    const options = {
-      headers: {
-        "content-type": "application/json",
-        "x-hasura-admin-secret":
-          "g08A3qQy00y8yFDq3y6N1ZQnhOPOa4msdie5EtKS1hFStar01JzPKrtKEzYY2BtF",
-        "x-hasura-role": "user",
-        "x-hasura-user-id": "1",
-      },
-      method: "GET",
-    };
+    const userId = Cookies.get("user_id");
+    const isUserAdmin = userId === "3";
+    const apiUrl = isUserAdmin
+      ? "https://bursting-gelding-24.hasura.app/api/rest/transaction-totals-admin"
+      : "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
+    const options = isUserAdmin
+      ? {
+          headers: {
+            "content-type": "application/json",
+            "x-hasura-admin-secret":
+              "g08A3qQy00y8yFDq3y6N1ZQnhOPOa4msdie5EtKS1hFStar01JzPKrtKEzYY2BtF",
+            "x-hasura-role": "admin",
+          },
+          method: "GET",
+        }
+      : {
+          headers: {
+            "content-type": "application/json",
+            "x-hasura-admin-secret":
+              "g08A3qQy00y8yFDq3y6N1ZQnhOPOa4msdie5EtKS1hFStar01JzPKrtKEzYY2BtF",
+            "x-hasura-role": "user",
+            "x-hasura-user-id": userId,
+          },
+          method: "GET",
+        };
     const response = await fetch(apiUrl, options);
     const data = await response.json();
-    const getDebitData = data.totals_credit_debit_transactions[0];
+    console.log(data);
+    const getDebitData = isUserAdmin
+      ? data.transaction_totals_admin[0]
+      : data.totals_credit_debit_transactions[0];
     const getDebitDataSum = getDebitData.sum;
-    this.setState({ debit: getDebitDataSum });
+    if (response.ok) {
+      this.setState({ debit: getDebitDataSum });
+    } else {
+      this.setState({ debit: "Error" });
+    }
   };
+
   render() {
     const { debit } = this.state;
+    console.log(debit);
     return (
       <DebitTile>
         <CreditAndDebitTileMoneyAndName>

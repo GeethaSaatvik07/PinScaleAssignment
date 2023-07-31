@@ -1,23 +1,70 @@
 import { Component } from "react";
+import { format } from "date-fns";
 import Cookies from "js-cookie";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import {
   PopupContainer,
-  AddTransactionHeadingAndCloseButton,
-  AddTransactionHeading,
+  UpdateTransactionHeadingAndCloseButton,
+  UpdateTransactionHeading,
   PopupCloseButton,
   PopupHeadingSubline,
   PopupLabelAndInput,
   PopupInputLabels,
   PopupInputs,
   PopupSelectInput,
-  PopupAddTransactionButton,
+  PopupUpdateTransactionButton,
 } from "./styledComponents";
 
-class AddTransactionPopup extends Component {
-  state = { name: "", type: "credit", category: "Food", amount: "", date: "" };
+class UpdateTransactionPopup extends Component {
+  //   constructor(props) {
+  //     super(props);
+  //     const { transactionDetails } = this.props;
+  //     // console.log(transactionDetails);
+  //     const {
+  //       transactionName,
+  //       type,
+  //       category,
+  //       amount,
+  //       date,
+  //     } = transactionDetails;
+
+  //     this.state = {
+  //       name: transactionName,
+  //       type: type,
+  //       category: category,
+  //       amount: amount,
+  //       date: date,
+  //     };
+  //   }
+
+  state = { name: "", type: "", category: "", amount: "", date: "" };
+
+  componentDidMount() {
+    const { transactionDetails } = this.props;
+    console.log(transactionDetails);
+    const {
+      transactionName,
+      type,
+      category,
+      amount,
+      date,
+    } = transactionDetails;
+    // console.log(date, "2");
+    // this.setState({
+    //   name: transactionName,
+    //   type: type,
+    //   category: category,
+    //   amount: amount,
+    //   date: date,
+    // });
+    this.setState({
+      name: transactionName,
+      type,
+      category,
+      amount,
+      date,
+    });
+  }
 
   onChangeName = (event) => {
     this.setState({ name: event.target.value });
@@ -39,37 +86,36 @@ class AddTransactionPopup extends Component {
     this.setState({ date: event.target.value });
   };
 
-  onAddedTransaction = () => {
-    toast("Wow so easy!", {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
-
   closePopup = () => {
     window.location.reload();
     this.onAddedTransaction();
   };
 
-  onClickAddTransaction = async (event) => {
+  onClickUpdateTransaction = async (event) => {
     event.preventDefault();
     const userId = Cookies.get("user_id");
     const { name, type, category, amount, date } = this.state;
+    console.log(date, "1");
+    const { transactionDetails } = this.props;
+    const { id } = transactionDetails;
+    // console.log(id);
     const apiUrl =
-      "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
-    const addTransactionDetails = {
-      name: name,
-      type: type,
-      category: category,
-      amount: amount,
-      date: date,
-      user_id: userId,
+      "https://bursting-gelding-24.hasura.app/api/rest/update-transaction";
+    // const updateTransactionDetails = {
+    //   id: id,
+    //   name: name,
+    //   type: type,
+    //   category: category,
+    //   amount: amount,
+    //   date: date,
+    // };
+    const updateTransactionDetails = {
+      id,
+      name,
+      type,
+      category,
+      amount,
+      date,
     };
     const options = {
       headers: {
@@ -80,35 +126,35 @@ class AddTransactionPopup extends Component {
         "x-hasura-user-id": userId,
       },
       method: "POST",
-      body: JSON.stringify(addTransactionDetails),
+      body: JSON.stringify(updateTransactionDetails),
     };
     const response = await fetch(apiUrl, options);
     const data = await response.json();
-    console.log(response, data);
+    console.log(data);
     if (response.ok) {
-      //   this.setState(
-      //     { name: "", type: "", category: "", amount: "", date: "" },
-      //     this.onAddedTransaction()
-      //   );
       this.setState(
         { name: "", type: "", category: "", amount: "", date: "" },
-        this.onAddedTransaction()
+        this.closePopup()
       );
+      //   this.setState({ name: "", type: "", category: "", amount: "", date: "" });
     }
   };
 
-  //   onClick(event) {
-  //     this.onClickAddTransaction();
-  //     this.onAddedTransaction();
-  //   }
-
   render() {
+    // const { close, transactionDetails } = this.props;
     const { close } = this.props;
     const { name, type, category, amount, date } = this.state;
+    console.log(date);
+    const myDate = new Date(date);
+    console.log(myDate);
+    const formattedDate = format(myDate, "dd-MM-yyyy");
+    console.log("Error");
     return (
       <PopupContainer>
-        <AddTransactionHeadingAndCloseButton>
-          <AddTransactionHeading>Add Transaction</AddTransactionHeading>
+        <UpdateTransactionHeadingAndCloseButton>
+          <UpdateTransactionHeading>
+            Update Transaction
+          </UpdateTransactionHeading>
           <PopupCloseButton></PopupCloseButton>
           <PopupCloseButton type="button" onClick={() => close()}>
             <svg
@@ -127,9 +173,9 @@ class AddTransactionPopup extends Component {
               />
             </svg>
           </PopupCloseButton>
-        </AddTransactionHeadingAndCloseButton>
+        </UpdateTransactionHeadingAndCloseButton>
         <PopupHeadingSubline>
-          You can add your transaction here
+          You can update your transaction here
         </PopupHeadingSubline>
         <PopupLabelAndInput>
           <PopupInputLabels id="name">Transaction Name</PopupInputLabels>
@@ -196,19 +242,19 @@ class AddTransactionPopup extends Component {
             placeholder="Select Date"
             required
             onChange={this.onChangeDate}
-            value={date}
+            value={formattedDate}
+            // value={date}
           />
         </PopupLabelAndInput>
-        <PopupAddTransactionButton
+        <PopupUpdateTransactionButton
           type="submit"
-          onClick={this.onClick}
-          //   onClick={(this.onClickAddTransaction)}
+          onClick={this.onClickUpdateTransaction}
         >
           Add Transaction
-        </PopupAddTransactionButton>
+        </PopupUpdateTransactionButton>
       </PopupContainer>
     );
   }
 }
 
-export default AddTransactionPopup;
+export default UpdateTransactionPopup;

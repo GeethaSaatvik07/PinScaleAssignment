@@ -15,6 +15,8 @@ export const NameAndLogo = styled.div`
   display: inline-flex;
   align-items: center;
   gap: 11px;
+  margin-left: 20px;
+  margin-top: 31px;
 `;
 
 export const CompanyName = styled.p`
@@ -28,4 +30,13 @@ export const CompanyName = styled.p`
 
 export const CompanyNameMatters = styled.span`
   color: #02969c;
+`;
+
+export const CompanyPageNavigation = styled.div`
+  width: 207px;
+  height: 171px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
 `;

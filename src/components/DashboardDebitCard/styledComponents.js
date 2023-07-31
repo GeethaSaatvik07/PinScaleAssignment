@@ -1,14 +1,14 @@
 import styled from "styled-components";
 export const DebitTile = styled.div`
   display: flex;
-  width: 43.2%;
+  width: 49%;
   //   height: 169px;
-  height: 19vh;
+  height: 25vh;
   padding: 25px 40px;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 8px;
+  //   gap: 8px;
   flex-shrink: 0;
   border-radius: 25px;
   background: #fff;

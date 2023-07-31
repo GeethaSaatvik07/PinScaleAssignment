@@ -1,4 +1,5 @@
 import { Component } from "react";
+import Cookies from "js-cookie";
 
 import {
   TransactionsPage,
@@ -6,13 +7,21 @@ import {
   FilterCreditDebit,
   TransactionsWithHeader,
   TransactionsContainer,
-  TotalTransactionsList,
+  //   TotalTransactionsList,
+  //   TransactionItemHeadings,
+  //   TransactionNameHeading,
+  //   CategoryDateAmountHeadings,
+  //   TransactionCategoryHeading,
+  //   TransactionDateHeading,
+  //   TransactionAmountHeading,
 } from "./styledComponents";
 
 import Header from "../Header";
 import SideNavbar from "../SideNavbar";
 import TransactionFilters from "../TransactionFilters";
-import TransactionListItem from "../TransactionListItem";
+// import TransactionListItem from "../TransactionListItem";
+import TransactionsListContainer from "../TransactionsListContainer";
+import TransactionsAdminListContainer from "../TransactionsAdminListContainer";
 
 const transactionFiltersList = [
   {
@@ -33,64 +42,19 @@ const transactionFiltersList = [
 ];
 
 class Transactions extends Component {
-  state = { filterId: transactionFiltersList[0].id, allTransactionsList: [] };
-
-  componentDidMount() {
-    this.getTransactions();
-  }
-
-  getTransactions = async () => {
-    // const { filterId } = this.state;
-    const apiUrl = `https://bursting-gelding-24.hasura.app/api/rest/all-transactions?limit=500&offset=0`;
-    const options = {
-      headers: {
-        "content-type": "application/json",
-        "x-hasura-admin-secret":
-          "g08A3qQy00y8yFDq3y6N1ZQnhOPOa4msdie5EtKS1hFStar01JzPKrtKEzYY2BtF",
-        "x-hasura-role": "user",
-        "x-hasura-user-id": "1",
-      },
-      method: "GET",
-    };
-    const response = await fetch(apiUrl, options);
-    const data = await response.json();
-    // console.log(data.transactions);
-    if (response.ok) {
-      const newTransactions = data.transactions.map((each) => ({
-        id: each.id,
-        transactionName: each.transaction_name,
-        type: each.type,
-        category: each.category,
-        amount: each.amount,
-        date: each.date,
-        userId: each.user_id,
-      }));
-      //   console.log(newLastTransactions);
-      this.setState({ allTransactionsList: newTransactions });
-    } else {
-      console.log(data);
-    }
-  };
+  state = { filterId: transactionFiltersList[0].id };
 
   onClickChangeFilter = (id) => {
     this.setState({ filterId: id });
   };
 
   render() {
-    const { filterId, allTransactionsList } = this.state;
-    console.log(filterId, allTransactionsList);
-    let filteredTransactionsList = null;
-    if (filterId > 0) {
-      filteredTransactionsList = allTransactionsList.filter(
-        (eachTransaction) =>
-          eachTransaction.type === transactionFiltersList[filterId].filter
-      );
-    } else {
-      filteredTransactionsList = allTransactionsList;
-    }
+    const { filterId } = this.state;
+    const userId = Cookies.get("user_id");
+    const isUserAdmin = userId === "3";
     return (
       <TransactionsPage>
-        <SideNavbar />
+        <SideNavbar active={"Transactions"} />
         <TransactionsWithHeader>
           <HeaderAndFilter>
             <Header heading={"Transactions"} />
@@ -106,14 +70,10 @@ class Transactions extends Component {
             </FilterCreditDebit>
           </HeaderAndFilter>
           <TransactionsContainer>
-            <TotalTransactionsList>
-              {filteredTransactionsList.map((eachTransaction) => (
-                <TransactionListItem
-                  key={eachTransaction.id}
-                  transactionDetails={eachTransaction}
-                />
-              ))}
-            </TotalTransactionsList>
+            {!isUserAdmin && <TransactionsListContainer filterId={filterId} />}
+            {isUserAdmin && (
+              <TransactionsAdminListContainer filterId={filterId} />
+            )}
           </TransactionsContainer>
         </TransactionsWithHeader>
       </TransactionsPage>
@@ -122,3 +82,34 @@ class Transactions extends Component {
 }
 
 export default Transactions;
+
+// let filteredTransactionsList = null;
+// if (filterId > 0) {
+//   filteredTransactionsList = allTransactionsList.filter(
+//     (eachTransaction) =>
+//       eachTransaction.type === transactionFiltersList[filterId].filter
+//   );
+// } else {
+//   filteredTransactionsList = allTransactionsList;
+// }
+
+// {/* <TotalTransactionsList>
+//   <TransactionItemHeadings>
+//     <TransactionNameHeading>
+//       Transaction Name
+//     </TransactionNameHeading>
+//     <CategoryDateAmountHeadings>
+//       <TransactionCategoryHeading>
+//         Category
+//       </TransactionCategoryHeading>
+//       <TransactionDateHeading>Date</TransactionDateHeading>
+//       <TransactionAmountHeading>Amount</TransactionAmountHeading>
+//     </CategoryDateAmountHeadings>
+//   </TransactionItemHeadings>
+//   {filteredTransactionsList.map((eachTransaction) => (
+//     <TransactionListItem
+//       key={eachTransaction.id}
+//       transactionDetails={eachTransaction}
+//     />
+//   ))}
+// </TotalTransactionsList> */}

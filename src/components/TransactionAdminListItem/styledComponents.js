@@ -19,6 +19,31 @@ export const CreditDebitSymbolAndName = styled.div`
   width: 30%;
 `;
 
+export const TransactionItemPhoto = styled.img`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-left: 24px;
+  margin-right: 8px;
+`;
+
+export const TransactionUserName = styled.p`
+  color: #505887;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  width: 30%;
+`;
+
+export const NameCategoryDateAmountHeadings = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 70%;
+`;
+
 export const TransactionName = styled.p`
   color: #505887;
   font-family: Inter;
@@ -26,14 +51,9 @@ export const TransactionName = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin-left: 16px;
-`;
-
-export const CategoryDateAmount = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 60%;
+  margin-right: 80px;
+  width: 180px;
+  margin-left: 15px;
 `;
 
 export const TransactionCategory = styled.p`
@@ -43,7 +63,7 @@ export const TransactionCategory = styled.p`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  //   margin-right: 90px;
+    margin-right: 96px;
   width: 80px;
 `;
 
@@ -54,13 +74,13 @@ export const TransactionDate = styled.p`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  //   margin-right: 90px;
+    margin-right: 100px;
   width: 150px;
 `;
 
 export const TransactionDebitAmount = styled.p`
   color: #fe5c73;
-  text-align: right;
+//   text-align: right;
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
@@ -71,37 +91,4 @@ export const TransactionDebitAmount = styled.p`
 
 export const TransactionCreditAmount = styled(TransactionDebitAmount)`
   color: #16dbaa;
-`;
-
-export const TransactionEditAndDelete = styled.div`
-  display: flex;
-  //   justify-content: space-between;
-  align-items: center;
-  width: 10%;
-`;
-
-export const EditButton = styled.button`
-  background: none;
-  border: none;
-  outline: none;
-  margin-right: 10px;
-`;
-
-export const DeleteButton = styled.button`
-  background: none;
-  border: none;
-  outline: none;
-  margin-left: 10px;
-`;
-
-export const PopupBackground = styled.div`
-  width: 100vw;
-  height: 100vh;
-  flex-shrink: 0;
-  background: rgba(52, 64, 84, 0.7);
-  backdrop-filter: blur(8px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;

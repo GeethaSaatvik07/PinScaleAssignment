@@ -31,17 +31,13 @@ export const ProfileCard = styled.div`
   display: flex;
 `;
 
-// export const ProfileImage = styled.img`
-//   //   background-image: url();
-//   //   background-repeat: no-repeat;
-//   //   background-size: cover;
-//   //   background-color: lightgray;
-//   width: 342px;
-//   height: 228px;
-//   flex-shrink: 0;
-//   //   border-radius: 100%;
-//   margin-top: -3px;
-//   margin-right: -56px;
-//   margin-bottom: -95px;
-//   margin-left: -156px;
-// `;
+export const ProfileImage = styled.img`
+  //   background-color: lightgray;
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  margin-top: 48px;
+  margin-left: 20px;
+  margin-right: 48px;
+`;
